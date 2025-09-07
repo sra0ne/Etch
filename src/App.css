@@ -1,0 +1,199 @@
+.app-container {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  padding: 1rem;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.app-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.app-header {
+  margin-bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  
+}
+
+.app-title {
+  font-size: 1.875rem;
+  font-weight: bold;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.app-subtitle {
+    font-size: 1rem;
+  font-weight: bold;
+  color: #111827;
+  margin-top: 0;
+  margin-bottom:50px;
+
+}
+
+.app-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .app-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.note-editor {
+  background-color: white;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  height: fit-content;
+}
+
+
+
+
+
+.editor-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 0.5rem;
+  display: block;
+    font-size: 18px;
+
+}
+
+.text-input {
+  width: 100%;
+  padding: 0.5rem 0.4rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  outline: none;
+  transition: all 0.2s;
+    font-size: 17px;
+
+}
+
+.text-input:focus {
+  box-shadow: 0 0 0 2px #3b82f6;
+  border-color: transparent;
+}
+
+.textarea-input {
+  width: 100%;
+  padding: 0.5rem 0.4rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  outline: none;
+  min-height: 200px;
+  resize: none;
+  transition: all 0.2s;
+  font-family: inherit;
+  font-size: 17px;
+}
+
+.textarea-input:focus {
+  box-shadow: 0 0 0 2px #3b82f6;
+  border-color: transparent;
+}
+
+.button-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.save-button {
+  padding: 0.8rem 0.8rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s;
+
+  font-size: 0.9rem;
+  width: auto;
+  max-width: fit-content;
+}
+
+.save-button:hover {
+  background-color: #1d4ed8;
+}
+
+.save-button:disabled {
+  background-color: #d1d5db;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+
+.wallet-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.connect-button {
+padding: 0.8rem 0.8rem;
+  background-color: #059669;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s;
+  font-size: 0.9rem;
+  width: auto;
+  max-width: fit-content;
+}
+
+.connect-button:hover { 
+  background-color: #047857;
+}
+
+.wallet-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 0.375rem;
+}
+
+.wallet-address {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #059669;
+  font-family: monospace;
+}
