@@ -125,7 +125,7 @@ export default function NotesApp() {
                   {!account ? "Connect Wallet" : "Save"}
                 </button>
                 <button
-                  onClick={fetchNotes}
+                  onClick={() => fetchNotes(provider)}
                   className="refresh-button"
                   disabled={!provider}
                 >
