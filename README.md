@@ -12,7 +12,7 @@ Etch is a simple React web-app that allows anyone to make permanent,immutable no
 
 ## TODO
 
-- Fetch notes
+- ~~Fetch notes~~
 - Pagination
 - Search notes
 - View other users' notes

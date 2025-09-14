@@ -3,8 +3,9 @@ import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import EtchABI from "../contracts/Etch.json";
 import "./App.css";
+import dayjs from "dayjs";
 
-const CONTRACT_ADDRESS = "0x"; //change with your contract address
+const CONTRACT_ADDRESS = "0xea831e5cf42946690a654a6d7c1e0857dfa06881"; //change with your contract address
 
 export default function NotesApp() {
   const [notes, setNotes] = useState([]);
@@ -30,14 +31,25 @@ export default function NotesApp() {
   }
 
   async function fetchNotes(currentProvider) {
-    if (!currentProvider) return;
-    const contract = new ethers.Contract(
-      CONTRACT_ADDRESS,
-      EtchABI,
-      currentProvider
-    );
-    const result = await contract.getMyNotes();
-    setNotes(result);
+    if (!currentProvider) {
+      console.warn("No provider available");
+      return;
+    }
+    try {
+      const signer = await currentProvider.getSigner();
+
+      const contract = new ethers.Contract(CONTRACT_ADDRESS, EtchABI, signer);
+      const result = await contract.getMyNotes();
+
+      const formatted = result.map((note) => ({
+        title: note.title ?? note[0],
+        content: note.content ?? note[1],
+        timestamp: note.timestamp ?? note[2],
+      }));
+      setNotes(formatted);
+    } catch (err) {
+      console.error("Failed to fetch notes:", err);
+    }
   }
 
   async function addNote() {
@@ -104,15 +116,51 @@ export default function NotesApp() {
                   className="textarea-input"
                 />
               </div>
-
-              <button
-                onClick={addNote}
-                className="save-button"
-                disabled={!account}
-              >
-                {!account ? "Connect Wallet" : "Save"}
-              </button>
+              <div className="button-group">
+                <button
+                  onClick={addNote}
+                  className="save-button"
+                  disabled={!account}
+                >
+                  {!account ? "Connect Wallet" : "Save"}
+                </button>
+                <button
+                  onClick={fetchNotes}
+                  className="refresh-button"
+                  disabled={!provider}
+                >
+                  Refresh
+                </button>
+              </div>
             </div>
+          </div>
+
+          <div className="notes-list">
+            <h2 className="saved-notes">Saved Notes ({notes.length})</h2>
+            {notes.length === 0 ? (
+              <p>No notes found.</p>
+            ) : (
+              <div className="notes-list">
+                {notes.map((note, idx) => (
+                  <div key={idx} className="note-card">
+                    <div className="note-content">
+                      <div className="note-header">
+                        <h3 className="note-title">{note.title}</h3>
+                      </div>
+
+                      <p className="note-text">
+                        {note.content || "No content"}
+                      </p>
+                      <p className="note-date">
+                        {dayjs
+                          .unix(Number(note.timestamp))
+                          .format("DD/MM/YYYY, hh:mm A")}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
