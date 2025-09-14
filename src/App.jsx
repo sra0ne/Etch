@@ -30,6 +30,17 @@ export default function NotesApp() {
     }
   }
 
+  function disconnectWallet() {
+    try {
+      const web3Modal = new Web3Modal({ cacheProvider: true });
+      web3Modal.clearCachedProvider();
+      setAccount(null);
+      setProvider(null);
+    } catch (err) {
+      console.error("Failed to disconnect:", err);
+    }
+  }
+
   async function fetchNotes(currentProvider) {
     if (!currentProvider) {
       console.warn("No provider available");
@@ -64,6 +75,13 @@ export default function NotesApp() {
     setContent("");
     fetchNotes(provider);
   }
+  useEffect(() => {
+    if (provider) {
+      fetchNotes(provider);
+    } else {
+      setNotes([]);
+    }
+  }, [provider]);
 
   return (
     <div className="app-container">
@@ -78,9 +96,9 @@ export default function NotesApp() {
               </button>
             ) : (
               <div className="wallet-info">
-                <span className="wallet-address">
+                <button className="connect-button" onClick={disconnectWallet}>
                   {account.slice(0, 6)}...{account.slice(-4)}
-                </span>
+                </button>
               </div>
             )}
           </div>
@@ -138,7 +156,14 @@ export default function NotesApp() {
           <div className="notes-list">
             <h2 className="saved-notes">Saved Notes ({notes.length})</h2>
             {notes.length === 0 ? (
-              <p>No notes found.</p>
+              <div className="empty-notes">
+                <div className="empty-content">
+                  <div className="empty-icon">📄</div>
+                  <p className="empty-text">
+                    No notes yet. Create your first note!
+                  </p>
+                </div>
+              </div>
             ) : (
               <div className="notes-list">
                 {notes.map((note, idx) => (
