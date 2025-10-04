@@ -14,6 +14,6 @@ Etch is a simple React web-app that allows anyone to make permanent,immutable no
 
 - ~~Fetch notes~~
 - Pagination
-- Search notes
+- ~~Search notes~~
 - View other users' notes
 - Themes

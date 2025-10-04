@@ -13,6 +13,7 @@ export default function NotesApp() {
   const [content, setContent] = useState("");
   const [account, setAccount] = useState(null);
   const [provider, setProvider] = useState(null);
+  const [searchKey, setSearchKey] = useState("");
 
   async function connectWallet() {
     try {
@@ -75,6 +76,14 @@ export default function NotesApp() {
     setContent("");
     fetchNotes(provider);
   }
+
+  const filteredNotes = notes.filter(
+    (note) =>
+      note.title.toLowerCase().includes(searchKey.toLowerCase()) ||
+      note.content.toLowerCase().includes(searchKey.toLowerCase())
+  );
+  console.log(filteredNotes);
+
   useEffect(() => {
     if (provider) {
       fetchNotes(provider);
@@ -154,7 +163,18 @@ export default function NotesApp() {
           </div>
 
           <div className="notes-list">
-            <h2 className="saved-notes">Saved Notes ({notes.length})</h2>
+            <div className="notes-header-row">
+              <h2 className="saved-notes">Saved Notes ({notes.length})</h2>
+              <div className="search-bar">
+                <input
+                  type="text"
+                  placeholder="Search notes..."
+                  value={searchKey}
+                  onChange={(e) => setSearchKey(e.target.value)}
+                  className="search-input"
+                />
+              </div>
+            </div>
             {notes.length === 0 ? (
               <div className="empty-notes">
                 <div className="empty-content">
@@ -166,7 +186,7 @@ export default function NotesApp() {
               </div>
             ) : (
               <div className="notes-list">
-                {notes.map((note, idx) => (
+                {filteredNotes.map((note, idx) => (
                   <div key={idx} className="note-card">
                     <div className="note-content">
                       <div className="note-header">
