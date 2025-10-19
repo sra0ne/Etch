@@ -23,9 +23,13 @@ export default function NotesApp() {
       const signer = await ethersProvider.getSigner();
       const addr = await signer.getAddress();
 
-      setAccount(addr);
+      const network = await ethersProvider.getNetwork();
+      if (network.chainId !== 84532n) { // Base Sepolia chain ID
+        await ethersProvider.send('wallet_switchEthereumChain', [{ chainId: '0x14a34' }]);
+      }
       setProvider(ethersProvider);
       fetchNotes(ethersProvider);
+      setAccount(addr);
     } catch (err) {
       console.error("Wallet connection failed:", err);
     }
@@ -60,7 +64,12 @@ export default function NotesApp() {
       }));
       setNotes(formatted);
     } catch (err) {
-      console.error("Failed to fetch notes:", err);
+      if (err.code === 'NETWORK_ERROR') {
+        // Retry after network change
+        setTimeout(() => fetchNotes(currentProvider), 1000);
+      } else {
+        console.error("Failed to fetch notes:", err);
+      }
     }
   }
 
@@ -68,13 +77,22 @@ export default function NotesApp() {
     if (!title || !content) return alert("Title and content required!");
     if (!provider) return alert("Connect wallet first");
 
-    const signer = await provider.getSigner();
-    const contract = new ethers.Contract(CONTRACT_ADDRESS, EtchABI, signer);
-    const tx = await contract.addNote(title, content);
-    await tx.wait();
-    setTitle("");
-    setContent("");
-    fetchNotes(provider);
+    try {
+      const signer = await provider.getSigner();
+      const contract = new ethers.Contract(CONTRACT_ADDRESS, EtchABI, signer);
+      const tx = await contract.addNote(title, content);
+      await tx.wait();
+      setTitle("");
+      setContent("");
+      fetchNotes(provider);
+    } catch (err) {
+      if (err.code === 'NETWORK_ERROR') {
+        alert("Network changed during transaction. Please try again.");
+      } else {
+        console.error("Failed to add note:", err);
+        alert("Failed to add note. Check console for details.");
+      }
+    }
   }
 
   const filteredNotes = notes.filter(
