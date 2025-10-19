@@ -164,7 +164,7 @@ export default function NotesApp() {
 
           <div className="notes-list">
             <div className="notes-header-row">
-              <h2 className="saved-notes">Saved Notes ({notes.length})</h2>
+              <h2 className="saved-notes">Saved Notes ({filteredNotes.length})</h2>
               <div className="search-bar">
                 <input
                   type="text"
